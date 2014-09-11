@@ -13,7 +13,7 @@ BOT_NAME = 'app_store_crawler'
 SPIDER_MODULES = ['app_store_crawler.spiders']
 NEWSPIDER_MODULE = 'app_store_crawler.spiders'
 COOKIES_ENABLED=False
-DOWNLOAD_DELAY=2
+DOWNLOAD_DELAY=0
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'app_store_crawler (+http://www.yourdomain.com)'
@@ -21,7 +21,8 @@ DOWNLOAD_DELAY=2
 #USER_AGENT='Mozilla/5.0'
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware' : None,
-    'app_store_crawler.comm.rotate_useragent.RotateUserAgentMiddleware' :400
+    'app_store_crawler.comm.rotate_useragent.RotateUserAgentMiddleware' :400,
+    'app_store_crawler.comm.proxy.RetryChangeProxyMiddleware': 600
 }
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -30,3 +31,4 @@ DOWNLOADER_MIDDLEWARES = {
 DUPEFILTER_CLASS='app_store_crawler.app_dup_filter.AppURLFilter'
 
 #MEMDEBUG_NOTIFY = ['maxwell.mao@hotmail.com']
+

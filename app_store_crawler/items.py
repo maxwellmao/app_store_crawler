@@ -13,7 +13,7 @@ class CrawlerItem(Item):
     # name = Field()
     pass
 
-class AppItem(scrapy.Item):
+class AppItem(Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     name=Field()
