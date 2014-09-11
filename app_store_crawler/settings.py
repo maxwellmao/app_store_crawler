@@ -13,7 +13,7 @@ BOT_NAME = 'app_store_crawler'
 SPIDER_MODULES = ['app_store_crawler.spiders']
 NEWSPIDER_MODULE = 'app_store_crawler.spiders'
 COOKIES_ENABLED=False
-DOWNLOAD_DELAY=0
+DOWNLOAD_DELAY=0.5
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'app_store_crawler (+http://www.yourdomain.com)'
