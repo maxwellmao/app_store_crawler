@@ -6,7 +6,6 @@ class RetryChangeProxyMiddleware(RetryMiddleware):
 #        log.msg('Changing proxy')
         print '[Proxy] Changing proxy'
         tn = telnetlib.Telnet('127.0.0.1', 9051)
-        tn = telnetlib.Telnet('128.0.0.1', 9051)
         tn.read_until("Escape character is '^]'.", 2)
         tn.write('AUTHENTICATE "267765"\r\n')
         tn.read_until("250 OK", 2)
