@@ -58,3 +58,6 @@ target/
 
 # result files
 result
+
+# date file
+*.json
