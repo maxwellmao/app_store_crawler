@@ -17,4 +17,4 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
         ua = random.choice(self.user_agent_list)
         if ua:
             request.headers.setdefault('User-Agent', ua)
-            print '[User agent]', ua
+#            print '[User agent]', ua

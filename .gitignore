@@ -55,3 +55,6 @@ target/
 
 # tmp file of vi
 .*.swp
+
+# result files
+result
