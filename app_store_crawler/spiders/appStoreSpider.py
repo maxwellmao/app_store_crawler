@@ -65,13 +65,22 @@ class AppStoreSpider(CrawlSpider):
             yield Request(appURL, callback=self.parseApp)
 
     def parseApp(self, response):
-        hxs = HtmlXPathSelector(response)
         item = AppItem()
         info={}
         info['url']=item['url']=response.url
-        info['name']=item['name']=response.xpath('//div[@id="title"]/div[1]/h1/text()[1]').extract()[0]
+        name=response.xpath('//div[@id="title"]/div[1]/h1/text()[1]').extract()
+        if name:
+            info['name']=item['name']=name[0]
+        else:
+            info['name']=item['name']=''
+
 #        print 'Name', response.xpath('//div[@id="title"]/div[1]/h1/text()').extract()[0]
-        info['description']=item['description']=response.xpath('//div[@class="product-review"]/p').extract()[0]
+        desc=response.xpath('//div[@class="product-review"]/p').extract()
+        if desc:
+            info['description']=item['description']=desc[0]
+        else:
+            info['description']=item['description']=''
+
         l_index=0
         for link in response.xpath('//div[@class="app-links"]/a/@href'):
             if l_index==0:
@@ -82,16 +91,54 @@ class AppStoreSpider(CrawlSpider):
 
 #       item['app_link_first']=response.xpath('//div[@class="app-links"]/a[1]/@href').extract()[0]
 #       item['app_link_second']=response.xpath('//div[@class="app-links"]/a[2]/@href').extract()[0]
-        info['category']=item['category']=response.xpath('//div[@id="left-stack"]/div/ul/li[@class="genre"]/a/text()[1]').extract()[0]
-#        item['update']=
-        info['price']=item['price']=response.xpath('//div[@class="price"]/text()').extract()[0]
-        info['size']=item['size']=response.xpath('//div[@id="left-stack"]/div/ul[@class="list"]/li[5]/text()').extract()[0]
-        info['version']=item['version']=response.xpath('//div[@id="left-stack"]/div/ul[@class="list"]/li[4]/text()').extract()[0]
-        info['lang']=item['lang']=response.xpath('//div[@id="left-stack"]/div/ul[@class="list"]/li[@class="language"]/text()').extract()[0]
-        info['seller']=item['seller']=response.xpath('//div[@id="left-stack"]/div/ul[@class="list"]/li[7]/text()').extract()[0]
-        info['compatibility']=item['compatibility']=response.xpath('//div[@id="left-stack"]/div/p/text()').extract()[0]
+        cate=response.xpath('//div[@id="left-stack"]/div/ul/li[@class="genre"]/a/text()[1]').extract()
+        if cate:
+            info['category']=item['category']=cate[0]
+        else:
+            info['category']=item['category']=''
 
-        info['release_date']=item['release_date']=response.xpath('//div[@id="left-stack"]/div/ul[@class="list"]/li[@class="release-date"]').extract()[0]
+#        item['update']=
+        price=response.xpath('//div[@class="price"]/text()').extract()
+        if price:
+            info['price']=item['price']=price[0]
+        else:
+            info['price']=item['price']=''
+
+        size=response.xpath('//div[@id="left-stack"]/div/ul[@class="list"]/li[5]/text()').extract()
+        if size:
+            info['size']=item['size']=[0]
+        else:
+            info['size']=item['size']=''
+
+        version=response.xpath('//div[@id="left-stack"]/div/ul[@class="list"]/li[4]/text()').extract()
+        if version:
+            info['version']=item['version']=version[0]
+        else:
+            info['version']=item['version']=''
+        
+        lang=response.xpath('//div[@id="left-stack"]/div/ul[@class="list"]/li[@class="language"]/text()').extract()
+        if lang:
+            info['lang']=item['lang']=lang[0]
+        else:
+            info['lang']=item['lang']=''
+
+        seller=item['seller']=response.xpath('//div[@id="left-stack"]/div/ul[@class="list"]/li[7]/text()').extract()
+        if seller:
+            info['seller']=seller[0]
+        else:
+            info['seller']=''
+
+        comp=response.xpath('//div[@id="left-stack"]/div/p/text()').extract()
+        if comp:
+            info['compatibility']=item['compatibility']=comp[0]
+        else:
+            info['compatibility']=item['compatibility']=''
+
+        release=response.xpath('//div[@id="left-stack"]/div/ul[@class="list"]/li[@class="release-date"]').extract()
+        if release:
+            info['release_date']=item['release_date']=release[0]
+        else:
+            info['release_date']=item['release_date']=''
 
         cur_rate=response.xpath('//div[@class="extra-list customer-ratings"]/div[2]/span[@class="rating-count"]/text()[2]').extract()
         if cur_rate:
