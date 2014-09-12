@@ -15,7 +15,8 @@ class AppStoreSpider(CrawlSpider):
 #        "https://itunes.apple.com/us/app/7-minute-workout/id650762525?mt=8"
 #        "https://itunes.apple.com/us/genre/ios/id36?mt=8",
 #        "https://itunes.apple.com/gb/genre/ios/id36?mt=8",
-        "https://itunes.apple.com/us/genre/ios-books/id6018?mt=8"
+#        "https://itunes.apple.com/us/genre/ios-books/id6018?mt=8"
+        "http://www.apple.com/choose-your-country/"
 #        "https://www.apple.com/itunes/charts/free-apps/",
 #        "https://www.apple.com/itunes/charts/paid-apps/",
     ]
@@ -25,6 +26,15 @@ class AppStoreSpider(CrawlSpider):
 #        )
 
     def parse(self, response):
+        '''
+            choose the country of markets
+        '''
+        for country in response.xpath('//div[@id="content" and @class="content selfclear"]/div/ul/li/a/@href'):
+            c_url='https://itunes.apple.com'+country.extract()+'genre/ios-books/id6018?mt=8'
+            print '[Country]', c_url
+            yield Request(c_url, callback=self.parseMarket)
+
+    def parseMarket(self, response):
         '''
             parsing the total categories of app store
         '''
@@ -177,5 +187,7 @@ class AppStoreSpider(CrawlSpider):
 #        for app_url in hxs.select('//a[@class="artwork-link"]/@href').extract():
 #            print app_url
 #            yield Request(app_url, callback=self.parseApp)
+        for app in response.xpath('//div[@class="lockup small application"]/a[@class="artwork-link"]/@href'):
+            yield Request(app.extract(), callback=self.parseApp)
 
 

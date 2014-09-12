@@ -5,7 +5,16 @@ class AppURLFilter(RFPDupeFilter):
         dup filter for url of app in google play
     '''
     def __getid__(self, url):
-        id=url.split("details?id=")[-1]
+        '''
+            remove same app in different languages
+        '''
+        url_piece=url.split('/')
+        if len(url_piece)>4 and url_piece[4]=='app':
+            if url_piece[3]=='us':
+                self.fingerprints.add('/'.join(url_piece[4:]))
+                return url
+            else:
+                return '/'.join(url_piece[4:])
         return url
     
     def request_seen(self, request):

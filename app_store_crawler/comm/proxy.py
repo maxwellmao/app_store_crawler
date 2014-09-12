@@ -1,6 +1,11 @@
 from scrapy.contrib.downloadermiddleware.retry import RetryMiddleware
 import telnetlib
 
+'''
+    refer to
+    https://groups.google.com/forum/#!msg/scrapy-users/WqMLnKbA43I/B3N1ysvoy-4J
+'''
+
 class RetryChangeProxyMiddleware(RetryMiddleware):
     def _retry(self, request, reason, spider):
 #        log.msg('Changing proxy')
